@@ -1,0 +1,84 @@
+program ArmstrongZahlen (input, output);
+{ Aufgabe 1 }
+
+  type
+  tNatZahl = 0..maxint;
+  
+  var
+  x,
+  y: tNatZahl;
+  
+  function countZiff(inZahl : tNatZahl): tNatZahl;
+  { Teilaufgabe a) gibt die Stellenanzahl der inZahl }
+  
+    var
+    Ziffern : tNatZahl;
+  
+  begin
+    Ziffern := 0;
+    while inZahl > 0 do
+    begin
+      inZahl := inZahl div 10;
+      Ziffern := Ziffern + 1;
+    end;
+    countZiff := Ziffern;
+  end; { Teilaufgabe a) countZiff }
+  
+  function potenziere(inBas, inExp : tNatZahl): tNatZahl;
+  { Teilaufgabe b) berechnet die n-te Potenz einer Zahl }
+  
+    var
+    i,
+    p : tNatZahl;
+    
+  begin
+    p := 1;
+    for i := 1 to inExp do
+    begin
+      p := p * inBas;
+    end;
+    potenziere := p;
+  end; { Teilaufgabe b) potenziere }
+  
+  function isArmstrong(inZahl : tNatZahl): boolean;
+  { Teilaufgabe c) prueft, ob inZahl eine Armstrong-Zahl ist }
+  
+    var
+    i,
+    ggfArmstrong,
+    AnzDerStellen,
+    ZwischErg,
+    EndErg,
+    LetzteZiffer : tNatZahl;
+    
+  begin
+    ggfArmstrong := inZahl;
+    AnzDerStellen := countZiff(inZahl);
+    EndErg := 0;
+    
+      for i := 1 to AnzDerStellen do
+      begin
+        LetzteZiffer := ggfArmstrong mod 10;
+        ZwischErg := potenziere(LetzteZiffer, AnzDerStellen);
+        ggfArmstrong := ggfArmstrong div 10;
+        EndErg := EndErg + ZwischErg
+      end;
+      
+    if EndErg = inZahl then
+      isArmstrong := true
+    else
+      isArmstrong := false;
+   end; { Teilaufgabe c) isArmstrong }
+
+begin
+readln(x);
+readln(y);
+writeln('Zwischen ',x,' und ',y,
+        ' liegen folgende Armstrong-Zahlen: ');
+  while x < y do
+  begin
+    if isArmstrong(x) then
+      writeln(x);
+      x := x + 1;
+  end;
+end. { ArmstrongZahlen }
